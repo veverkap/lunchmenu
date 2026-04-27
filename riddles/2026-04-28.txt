@@ -1,0 +1,2 @@
+Riddle: What three numbers, none of which is zero, give the same result whether they're added or multiplied?
+Answer: One, two and three
