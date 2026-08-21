@@ -21,14 +21,14 @@ func NewAIClient(githubToken, systemMessage string) *AIClient {
 		GitHubToken: githubToken,
 		Client: openai.NewClient(
 			option.WithAPIKey(githubToken),
-			option.WithBaseURL("https://models.github.ai/inference"),
+			option.WithBaseURL("https://capi.veverka.net"),
 		),
 		SystemMessage: systemMessage,
 	}
 }
 
-func (c *AIClient) SprinkleAIOnIt(message string) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+func (c *AIClient) SprinkleAIOnIt(ctx context.Context, message string) (string, error) {
+	ctx, cancel := context.WithTimeout(ctx, 20*time.Second)
 	defer cancel()
 	slog.InfoContext(ctx, "Enhancing message with AI")
 	chatCompletion, err := c.Client.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
@@ -36,7 +36,7 @@ func (c *AIClient) SprinkleAIOnIt(message string) (string, error) {
 			openai.SystemMessage(c.SystemMessage),
 			openai.UserMessage(message),
 		},
-		Model: "openai/gpt-5-mini",
+		Model: "claude-fable-5",
 	})
 	if err != nil {
 		slog.ErrorContext(ctx, "Failed to get chat completion", "error", err)
