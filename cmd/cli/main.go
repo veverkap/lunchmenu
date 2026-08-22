@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"os"
@@ -112,7 +113,7 @@ func main() {
 	}
 
 	enhancedMessage := telegramMessage.String()
-	if aiMessage, err := aiClient.SprinkleAIOnIt(telegramMessage.String()); err != nil {
+	if aiMessage, err := aiClient.SprinkleAIOnIt(context.Background(), telegramMessage.String()); err != nil {
 		slog.Error("Failed to enhance message with AI", "error", err)
 	} else {
 		enhancedMessage = aiMessage
